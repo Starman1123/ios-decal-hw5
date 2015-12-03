@@ -192,17 +192,17 @@ class PlayerViewController: UIViewController {
      */
 
     func previousTrackTapped(sender: UIButton) {
-        if currentIndex - 1 >= 0 {
+        if currentIndex >= 1 {
+            player.pause()
             currentIndex = currentIndex - 1
-            if player.rate == 1.0 {
-                player = AVPlayer()
-                loadTrackElements()
-                let track = tracks[currentIndex]
-                let path = NSBundle.mainBundle().pathForResource("Info", ofType: "plist")
-                let clientID = NSDictionary(contentsOfFile: path!)?.valueForKey("client_id") as! String
-                let url = NSURL(string: "https://api.soundcloud.com/tracks/\(track.id)/stream?client_id=\(clientID)")!
-                playerItem = AVPlayerItem(URL: url)
-                player = AVPlayer(playerItem: playerItem!)
+            loadTrackElements()
+            let track = tracks[currentIndex]
+            let path = NSBundle.mainBundle().pathForResource("Info", ofType: "plist")
+            let clientID = NSDictionary(contentsOfFile: path!)?.valueForKey("client_id") as! String
+            let url = NSURL(string: "https://api.soundcloud.com/tracks/\(track.id)/stream?client_id=\(clientID)")!
+            playerItem = AVPlayerItem(URL: url)
+            player = AVPlayer(playerItem: playerItem!)
+            if playPauseButton.selected == true {
                 player.play()
             }
             else {
